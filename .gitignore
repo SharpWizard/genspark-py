@@ -1,0 +1,25 @@
+# cookies / secrets
+*cookies*.txt
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.tox/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# editors
+.idea/
+.vscode/
+*.swp
+.DS_Store
