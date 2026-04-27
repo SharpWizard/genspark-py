@@ -28,8 +28,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-org/genspark-py"
-Issues = "https://github.com/your-org/genspark-py/issues"
+Homepage = "https://github.com/SharpWizard/genspark-py"
+Issues = "https://github.com/SharpWizard/genspark-py/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -20,13 +20,13 @@ required**.
 ## Install
 
 ```bash
-pip install git+https://github.com/your-org/genspark-py.git
+pip install git+https://github.com/SharpWizard/genspark-py.git
 ```
 
 Local clone:
 
 ```bash
-git clone https://github.com/your-org/genspark-py
+git clone https://github.com/SharpWizard/genspark-py
 cd genspark-py
 pip install -e .
 ```
