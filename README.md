@@ -136,25 +136,90 @@ GENSPARK_MODEL=gemini-2.5-pro python examples/chat.py "Compare Rust and Go"
 
 ---
 
-## 🤖 Supported Models
+## 🤖 Supported Models — All 30 Chat Models
 
-`KNOWN_MODELS` ships with the IDs the web UI surfaced at the time of
-recording:
+Pulled directly from the Genspark.ai web UI's Nuxt JS bundle on
+**2026-04-27**. Pass any `id` below to `chat(model=...)`.
+
+### OpenAI — GPT-5 family & o-series
+
+| Model ID                | Label                  | Status |
+| ----------------------- | ---------------------- | ------ |
+| `gpt-5.5`               | GPT-5.5                | live   |
+| `gpt-5.4`               | GPT-5.4                | live   |
+| `gpt-5.4-pro`           | GPT-5.4 Pro            | live   |
+| `gpt-5.4-mini`          | GPT-5.4 Mini           | live   |
+| `gpt-5.4-nano`          | GPT-5.4 Nano           | live   |
+| `gpt-5.2-pro`           | GPT-5.2 Pro            | live   |
+| `o3-pro`                | o3-pro                 | live   |
+| `gpt-5-pro`             | GPT-5 Pro              | hidden / legacy |
+| `gpt-5.2`               | GPT-5.2                | hidden / legacy |
+| `gpt-5.1-low`           | GPT-5.1 Instant        | hidden / legacy |
+| `gpt-5.1-medium`        | GPT-5.1 Thinking       | hidden / legacy |
+| `gpt-5.1-high`          | GPT-5.1 Thinking High  | hidden / legacy |
+
+### Anthropic Claude
+
+| Model ID                | Label                  | Status |
+| ----------------------- | ---------------------- | ------ |
+| `claude-opus-4-7`       | Claude Opus 4.7        | live   |
+| `claude-opus-4-6`       | Claude Opus 4.6        | live   |
+| `claude-sonnet-4-6`     | Claude Sonnet 4.6      | live (default) |
+| `claude-4-5-haiku`      | Claude Haiku 4.5       | live   |
+| `claude-opus-4-5`       | Claude Opus 4.5        | hidden / legacy |
+| `claude-opus-4-1`       | Claude Opus 4.1        | hidden / legacy |
+| `claude-sonnet-4-5`     | Claude Sonnet 4.5      | hidden / legacy |
+| `claude-sonnet-4`       | Claude Sonnet 4        | hidden / legacy |
+| `claude-kindal-eap`     | (early-access codename)| hidden / experimental |
+
+### Google Gemini
+
+| Model ID                  | Label                   | Status |
+| ------------------------- | ----------------------- | ------ |
+| `gemini-3.1-pro-preview`  | Gemini 3.1 Pro Preview  | live (preview) |
+| `gemini-3-flash-preview`  | Gemini 3 Flash Preview  | live (preview) |
+| `gemini-2.5-pro`          | Gemini 2.5 Pro          | live   |
+| `gemini-2.5-flash`        | Gemini 2.5 Flash        | hidden / legacy |
+
+### xAI Grok
+
+| Model ID                          | Label                | Status |
+| --------------------------------- | -------------------- | ------ |
+| `grok-4.20-0309-reasoning`        | Grok 4.20 Reasoning  | live   |
+| `grok-4.20-0309-non-reasoning`    | Grok 4.20            | live   |
+| `grok-4-0709`                     | Grok4 0709           | hidden / legacy |
+
+### Moonshot Kimi
+
+| Model ID                  | Label                 | Status |
+| ------------------------- | --------------------- | ------ |
+| `kimi-k2-instruct`        | Kimi K2 Instruct      | hidden / legacy |
+| `groq-kimi-k2-instruct`   | Groq Kimi K2 Instruct | hidden / legacy |
+
+### Mixture-of-Agents (MoA)
+
+Genspark's flagship "ask three at once and synthesize" mode. Pass the
+comma-separated bundle as a single `model` string:
+
+| Model ID                                                          | Label              |
+| ----------------------------------------------------------------- | ------------------ |
+| `gpt-5.1-low,claude-sonnet-4-6,gemini-3.1-pro-preview`            | Mixture-of-Agents  |
+
+### Programmatic access
 
 ```python
-from genspark import KNOWN_MODELS
-print(KNOWN_MODELS)
-# ['claude-sonnet-4-6',
-#  'claude-haiku-4-5',
-#  'claude-opus-4-7',
-#  'gemini-2.5-pro',
-#  'gpt-4o',
-#  'grok-4']
+from genspark import KNOWN_MODELS, DEFAULT_MODEL
+
+# all 30 model IDs with labels and metadata
+for model_id, info in KNOWN_MODELS.items():
+    print(model_id, "->", info["label"], info["vendor"])
+
+# current default
+print(DEFAULT_MODEL)  # 'claude-sonnet-4-6'
 ```
 
-Any string accepted by the web UI works — just pass it to `chat(model=...)`.
-You can also call `client.models_config()` to fetch the current catalogue
-straight from the server.
+You can also call `client.models_config()` to fetch the live image / audio
+/ video model catalogue straight from the server.
 
 ---
 

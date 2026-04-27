@@ -27,14 +27,56 @@ DEFAULT_UA = (
     "(KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36"
 )
 
-KNOWN_MODELS = [
-    "claude-sonnet-4-6",
-    "claude-haiku-4-5",
-    "claude-opus-4-7",
-    "gemini-2.5-pro",
-    "gpt-4o",
-    "grok-4",
-]
+# Pulled from the Genspark.ai web UI's Nuxt JS bundle on 2026-04-27.
+# `label` is what the UI shows; `id` is what /api/agent/ask_proxy expects in
+# `ai_chat_model`. `hidden` models are no longer in the model picker but
+# still respond when called directly.
+KNOWN_MODELS = {
+    # OpenAI - GPT-5 family (current)
+    "gpt-5.4":                          {"label": "GPT-5.4",                "vendor": "openai", "hidden": False},
+    "gpt-5.5":                          {"label": "GPT-5.5",                "vendor": "openai", "hidden": False},
+    "gpt-5.4-mini":                     {"label": "GPT-5.4 Mini",           "vendor": "openai", "hidden": False},
+    "gpt-5.4-nano":                     {"label": "GPT-5.4 Nano",           "vendor": "openai", "hidden": False},
+    "gpt-5.2-pro":                      {"label": "GPT-5.2 Pro",            "vendor": "openai", "hidden": False},
+    "gpt-5.4-pro":                      {"label": "GPT-5.4 Pro",            "vendor": "openai", "hidden": False},
+    "o3-pro":                           {"label": "o3-pro",                 "vendor": "openai", "hidden": False},
+    # OpenAI - GPT-5 family (hidden / legacy in UI)
+    "gpt-5-pro":                        {"label": "GPT-5 Pro",              "vendor": "openai", "hidden": True},
+    "gpt-5.1-low":                      {"label": "GPT-5.1 Instant",        "vendor": "openai", "hidden": True},
+    "gpt-5.1-medium":                   {"label": "GPT-5.1 Thinking",       "vendor": "openai", "hidden": True},
+    "gpt-5.1-high":                     {"label": "GPT-5.1 Thinking High",  "vendor": "openai", "hidden": True},
+    "gpt-5.2":                          {"label": "GPT-5.2",                "vendor": "openai", "hidden": True},
+    # Anthropic Claude (current)
+    "claude-sonnet-4-6":                {"label": "Claude Sonnet 4.6",      "vendor": "anthropic", "hidden": False},
+    "claude-opus-4-7":                  {"label": "Claude Opus 4.7",        "vendor": "anthropic", "hidden": False},
+    "claude-opus-4-6":                  {"label": "Claude Opus 4.6",        "vendor": "anthropic", "hidden": False},
+    "claude-4-5-haiku":                 {"label": "Claude Haiku 4.5",       "vendor": "anthropic", "hidden": False},
+    # Anthropic Claude (hidden / legacy in UI)
+    "claude-sonnet-4":                  {"label": "Claude Sonnet 4",        "vendor": "anthropic", "hidden": True},
+    "claude-sonnet-4-5":                {"label": "Claude Sonnet 4.5",      "vendor": "anthropic", "hidden": True},
+    "claude-opus-4-1":                  {"label": "Claude Opus 4.1",        "vendor": "anthropic", "hidden": True},
+    "claude-opus-4-5":                  {"label": "Claude Opus 4.5",        "vendor": "anthropic", "hidden": True},
+    "claude-kindal-eap":                {"label": "claude-kindal-eap",      "vendor": "anthropic", "hidden": True},
+    # Google Gemini (current)
+    "gemini-2.5-pro":                   {"label": "Gemini 2.5 Pro",         "vendor": "google", "hidden": False},
+    "gemini-3-flash-preview":           {"label": "Gemini 3 Flash Preview", "vendor": "google", "hidden": False},
+    "gemini-3.1-pro-preview":           {"label": "Gemini 3.1 Pro Preview", "vendor": "google", "hidden": False},
+    # Google Gemini (hidden / legacy in UI)
+    "gemini-2.5-flash":                 {"label": "Gemini 2.5 Flash",       "vendor": "google", "hidden": True},
+    # xAI Grok (current)
+    "grok-4.20-0309-reasoning":         {"label": "Grok 4.20 Reasoning",    "vendor": "xai", "hidden": False},
+    "grok-4.20-0309-non-reasoning":     {"label": "Grok 4.20",              "vendor": "xai", "hidden": False},
+    # xAI Grok (hidden / legacy in UI)
+    "grok-4-0709":                      {"label": "Grok4 0709",             "vendor": "xai", "hidden": True},
+    # Moonshot Kimi (hidden / legacy in UI)
+    "kimi-k2-instruct":                 {"label": "Kimi K2 Instruct",       "vendor": "moonshot", "hidden": True},
+    "groq-kimi-k2-instruct":            {"label": "Groq Kimi K2 Instruct",  "vendor": "groq", "hidden": True},
+    # Mixture-of-Agents (special: comma-separated ensemble)
+    "gpt-5.1-low,claude-sonnet-4-6,gemini-3.1-pro-preview":
+                                        {"label": "Mixture-of-Agents",      "vendor": "moa", "hidden": False},
+}
+
+DEFAULT_MODEL = "claude-sonnet-4-6"
 
 
 class GensparkAuthError(RuntimeError):
@@ -179,7 +221,7 @@ class GensparkClient:
     def chat(
         self,
         prompt: str,
-        model: str = "claude-sonnet-4-6",
+        model: str = DEFAULT_MODEL,
         enable_search: bool = True,
         is_private: bool = True,
         project_id: Optional[str] = None,

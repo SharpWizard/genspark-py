@@ -13,7 +13,7 @@ streams a single chat reply.
 import os
 import sys
 
-from genspark import GensparkClient, KNOWN_MODELS, stream_text
+from genspark import GensparkClient, KNOWN_MODELS, DEFAULT_MODEL, stream_text
 
 
 def _load_dotenv():
@@ -46,7 +46,7 @@ def main():
     user = client.get_user().get("data", {}).get("cogen", {})
     print(f"[*] Logged in: {user.get('email')}  plan={user.get('plan')}")
 
-    model = os.environ.get("GENSPARK_MODEL", "claude-sonnet-4-6")
+    model = os.environ.get("GENSPARK_MODEL", DEFAULT_MODEL)
     if model not in KNOWN_MODELS:
         print(f"[!] Warning: model {model!r} is not in KNOWN_MODELS - sending anyway.")
 
